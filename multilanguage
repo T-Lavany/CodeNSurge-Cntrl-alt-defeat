@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global News Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            background-color: #007bff;
+            color: white; 
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            background-color: #333;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .container {
+            padding: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .news-article {
+            margin-bottom: 20px;
+        }
+        footer {
+            background-color: #003bff;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        .next-page {
+            margin-top: 20px;
+        }
+        /* Login & Sign-Up */
+        .login-form, .signup-form {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .login-form input, .signup-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1 id="headline-title">Stock Market & Weather</h1>
+        <p id="headline-subtitle">Stay Updated with Stock Market News and Weather</p>
+        <div class="language-selector">
+            <label for="language">Select Language:</label>
+            <select id="language" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="es">Telugu</option>
+                <option value="fr">Tamil</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- Login Page -->
+    <section id="login-section" class="container login-form">
+        <h2 id="login-title">Login</h2>
+        <form id="login-form">
+            <label for="username" id="username-label">Username:</label>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password" id="password-label">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+            <input type="button" value="Login" onclick="login()">
+            <p id="no-account">Don't have an account? </p>
+        </form>
+    </section>
+
+    <!-- Sign Up Page -->
+    <section id="signup-section" class="container signup-form hidden">
+        <h2 id="signup-title">Sign Up</h2>
+        <form id="signup-form">
+            <label for="new-username" id="new-username-label">Username:</label>
+            <input type="text" id="new-username" name="new-username" required><br>
+            <label for="new-password" id="new-password-label">Password:</label>
+            <input type="password" id="new-password" name="new-password" required><br>
+            <input type="button" value="Sign Up" onclick="signup()">
+            <p id="have-account">Already have an account? </p>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 <span id="footer-text">Stock Market & Weather</span>. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Login, Language Translation, and Content Display -->
+    <script>
+        const translations = {
+            en: {
+                headlineTitle: "Stock Market & Weather",
+                headlineSubtitle: "Stay Updated with Stock Market News and Weather",
+                loginTitle: "Login",
+                usernameLabel: "Username:",
+                passwordLabel: "Password:",
+                noAccount: "Don't have an account?",
+                signupTitle: "Sign Up",
+                newUsernameLabel: "Username:",
+                newPasswordLabel: "Password:",
+                haveAccount: "Already have an account?",
+                footerText: "Stock Market & Weather"
+            },
+            es: {
+                headlineTitle: "స్టాక్ మార్కెట్ అండ్ వెదర్",
+                headlineSubtitle:"స్టే అప్డేట్ విత్ స్టాక్ మార్కెట్ న్యూస్ అండ్ వెదర్",
+                loginTitle: "లాగిన్",
+                usernameLabel: "యూజర్నేం",
+                passwordLabel: "పాస్వర్డ్",
+                noAccount: "డోంట్ హవె అ అకౌంట్",
+                signupTitle: "సైన్ అప్",
+                newUsernameLabel: "యూజర్నేం",
+                newPasswordLabel: "పాస్వర్డ్",
+                haveAccount: "ఆల్రెడీ హవె అ అకౌంట్",
+                footerText: "స్టాక్ మార్కెట్ అండ్ వెదర్",
+            },
+            fr: {
+                headlineTitle: "ஸ்டாக் மார்க்கெட் அண்ட் வெதர்",
+                headlineSubtitle: "ஸ்டே அப்டேட் வித் வித் ஸ்டாக் மார்க்கெட் நியூஸ் அண்ட் வெதர்",
+                loginTitle: "லாகின்",
+                usernameLabel: "யூசர்ணேம்:",
+                passwordLabel: "பாஸ்வோர்டு",
+                noAccount: "பாஸ்வோர்டு",
+                signupTitle: "டோன்ட் ஹவ் அ அக்கௌன்ட்",
+                newUsernameLabel: "சொக்கிப்",
+                newPasswordLabel: "யூசர்ணேம்",
+                haveAccount: "பாஸ்வோர்டு",
+                footerText: "ஸ்டாக் மார்க்கெட் அண்ட் வெதர்",
+            },
+        };
+
+        function changeLanguage() {
+            const language = document.getElementById('language').value;
+            document.getElementById('headline-title').textContent = translations[language].headlineTitle;
+            document.getElementById('headline-subtitle').textContent = translations[language].headlineSubtitle;
+            document.getElementById('login-title').textContent = translations[language].loginTitle;
+            document.getElementById('username-label').textContent = translations[language].usernameLabel;
+            document.getElementById('password-label').textContent = translations[language].passwordLabel;
+            document.getElementById('no-account').textContent = translations[language].noAccount + " " + document.querySelector("#no-account a").outerHTML;
+            document.getElementById('signup-title').textContent = translations[language].signupTitle;
+            document.getElementById('new-username-label').textContent = translations[language].newUsernameLabel;
+            document.getElementById('new-password-label').textContent = translations[language].newPasswordLabel;
+            document.getElementById('have-account').textContent = translations[language].haveAccount + " " + document.querySelector("#have-account a").outerHTML;
+            document.getElementById('footer-text').textContent = translations[language].footerText;
+        }
+    </script>
+</body>
+    <!-- JavaScript for Login and Content Display -->
+    <script>
+        function signup() {
+            // Capture the username and password entered during signup
+            const newUsername = document.getElementById('new-username').value;
+            const newPassword = document.getElementById('new-password').value;
+
+            // Store the credentials in localStorage
+            localStorage.setItem('username', newUsername);
+            localStorage.setItem('password', newPassword);
+
+            alert('Account created successfully! Please login.');
+            showLogin();
+        }
+
+        function login() {
+            // Retrieve stored credentials from localStorage
+            const storedUsername = localStorage.getItem('username');
+            const storedPassword = localStorage.getItem('password');
+
+            // Get the username and password entered in the login form
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Validate credentials
+            if (username === storedUsername && password === storedPassword) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('contact').style.display = 'block';
+            } else {
+                alert('Invalid login credentials!');
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('signup-section').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+        }
+
+        function showSignup() {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('signup-section').classList.remove('hidden');
+        }
+    </script>
+    </style>
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="#breakingnews" onclick="showSection('breakingnews')">breakingnews</a>
+        <a href="#stockmarket" onclick="showSection('stockmarket')">stockmarket</a>
+        <a href="#weather" onclick="showSection('weather')">weather</a>
+        <a href="#contact" onclick="showSection('contact')">Contact</a>
+    </nav>
+
+   <!-- BREAKINGNEWS News Page -->
+   <section id="BREAKINGNEWS" class="container">
+    <h2>Top Headlines</h2>
+    <div class="news-article">
+        <h3>Breaking: Multilingual Language</h3>
+        <p>now we have launched a multi language news please select your preffered language in the language section..</p>
+    </div>
+    <div class="news-article">
+        <h3>New Advancements in Language preference </h3>
+        <p> Experts weigh in on the potential benefits and concerns...</p>
+    </div>
+</section>
+    <!-- stock News Page -->
+    <section id="stockmarket" class="container" style="display: none;">
+        <h2>World News</h2>
+        <div class="news-article">
+            <h3>Stock Market details</h3>
+            <p> Major indices show mixed results as investors react to economic data amid ongoing geopolitical tensions.</p>
+            <a href="#">Read more</a>
+        </div>
+        <div class="news-article">
+            <h3>get know the prices</h3>
+            <p>Current stock prices fluctuate with the market, impacting investor strategies and decisions</p>
+            <a href="#">Read more</a>
+        </div>
+        <div class="news-article">
+                        <h3>Tech Stocks on the Rise</h3>
+                        <p>Leading technology stocks are experiencing significant gains, driven by strong earnings reports and increasing demand for innovative solutions.</p>
+                        <a href="#">Read more</a>
+                    </div>
+            
+    </section>
+    <!-- weather News Page -->
+    <section id="weather" class="container" style="display: none;">
+        <h2>Technology</h2>
+        <div class="news-article">
+                        <h3>Severe Weather Alerts Issued</h3>
+                        <p>Authorities have issued severe weather alerts across several regions as heavy rainfall and strong winds are expected to impact daily life.</p>
+                        <a href="#">Read more</a>
+                    </div>
+            
+            <div class="news-article">
+                        <h3>Temperature Soars in Vijayawada</h3>
+                        <p>The temperature in Vijayawada has reached record highs, prompting health officials to advise residents to stay hydrated and avoid outdoor activities during peak hours.</p>
+                        <a href="#">Read more</a>
+                    </div>
+            
+            <div class="news-article">
+                        <h3>Upcoming Cold Front Forecast</h3>
+                        <p>Weather experts predict a cold front will move into the area next week, bringing cooler temperatures and the possibility of frost in the mornings.</p>
+                        <a href="#">Read more</a>
+                    </div>
+    </section>
+    <!-- Contact Page -->
+    <section id="contact" class="container" style="display: none;">
+        <h2>Contact Us</h2>
+        <p>If you have any questions or want to submit a news tip, feel free to contact us using the form below.</p>
+        <form action="/submit-tip" method="POST">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Global News. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript to Switch Between Sections -->
+    <script>
+        function showSection(sectionId) {
+            var sections = document.querySelectorAll('section');
+            sections.forEach(function(section) {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
